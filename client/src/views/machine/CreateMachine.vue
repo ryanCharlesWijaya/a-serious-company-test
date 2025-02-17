@@ -35,14 +35,14 @@ const submit = async (e: Event) => {
             <div class="col-span-12 mb-2">
                 <div class="flex machines-center justify-between mb-5">
                     <div class="min-w-0">
-                        <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight capitalize">
+                        <h2 class="text-2xl font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight capitalize">
                             Create Machine
                         </h2>
                     </div>
 
                     <div class="min-w-0">
                         <RouterLink :to="'/machines'" class="button button-primary">
-                            Back To Router List
+                            Back 
                         </RouterLink>
                     </div>
                 </div>

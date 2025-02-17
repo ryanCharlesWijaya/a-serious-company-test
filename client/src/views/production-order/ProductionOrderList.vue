@@ -51,7 +51,7 @@ const deleteProductionOrder = async (productionOrderId: number) => {
                 <div class="flex productionOrders-center justify-between mb-5">
                     <div class="min-w-0">
                         <h2
-                            class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight capitalize">
+                            class="text-2xl font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight capitalize">
                             Production Order List
                         </h2>
                     </div>

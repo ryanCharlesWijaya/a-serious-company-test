@@ -46,7 +46,7 @@ const deleteItem = async (itemId: number) => {
             <div class="col-span-12">
                 <div class="flex items-center justify-between mb-5">
                     <div class="min-w-0">
-                        <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight capitalize">
+                        <h2 class="text-2xl font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight capitalize">
                             Item List    
                         </h2>
                     </div>

@@ -63,14 +63,14 @@ const submit = async (e: Event) => {
             <div class="col-span-12 mb-2">
                 <div class="flex productionOrders-center justify-between mb-5">
                     <div class="min-w-0">
-                        <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight capitalize">
+                        <h2 class="text-2xl font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight capitalize">
                             Edit Production Order
                         </h2>
                     </div>
 
                     <div class="min-w-0">
                         <RouterLink :to="'/production-orders'" type="button" class="button button-primary">
-                            Back To Router List
+                            Back 
                         </RouterLink>
                     </div>
                 </div>
@@ -79,13 +79,17 @@ const submit = async (e: Event) => {
             <div class="col-span-12 mb-2">
                 <label for="name" class="block text-sm/6 font-medium text-gray-900">Status</label>
                 <div class="mt-2">
-                    <input
+                    <select
                         type="text"
                         name='status'
                         id='status'
-                        v-value="productionOrderData.status"
+                        v-model="productionOrderData.status"
                         class="form-control"
                         placeholder='status'>
+                        <option value="pending">pending</option>
+                        <option value="in-progress">in-progress</option>
+                        <option value="completed">completed</option>
+                    </select>
                 </div>
             </div>
             <div class="col-span-12 mb-2">

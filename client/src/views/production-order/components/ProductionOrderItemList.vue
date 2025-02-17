@@ -47,15 +47,9 @@ const removeProductionOrderItemMaterial = async (order_item_index: number, index
                     <div class="col-span-12 mb-2">
                         <div class="flex productionOrders-center justify-between mb-5">
                             <div class="min-w-0">
-                                <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight capitalize">
-                                    Items
+                                <h2 class="text-2xl font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight capitalize">
+                                    Output Items
                                 </h2>
-                            </div>
-
-                            <div class="min-w-0">
-                                <button @click="addProductionOrderItem()" type="button" class="button button-primary">
-                                    Add
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -65,7 +59,7 @@ const removeProductionOrderItemMaterial = async (order_item_index: number, index
                     <div class="card-body">
                         <div v-for="(productionOrderItemData, index) in props.productionOrderItems"  class="col col-span-12">
                             <div class="row">
-                                <div class="col-span-5 mb-2">
+                                <div class="col-span-6 mb-2">
                                     <label class="block text-sm/6 font-medium text-gray-900">Item</label>
                                     <div class="mt-2">
                                         <select
@@ -81,7 +75,7 @@ const removeProductionOrderItemMaterial = async (order_item_index: number, index
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-span-5 mb-2">
+                                <div class="col-span-6 mb-2">
                                     <label class="block text-sm/6 font-medium text-gray-900">Quantity</label>
                                     <div class="mt-2">
                                         <input
@@ -93,36 +87,24 @@ const removeProductionOrderItemMaterial = async (order_item_index: number, index
                                             placeholder='Quantity'>
                                     </div>
                                 </div>
-                                <div class="col-span-2 mb-2 flex items-end">
-                                    <label class="block text-sm/6 font-medium text-gray-900">&nbsp;</label>
-                                    <button @click="removeProductionOrderItem(index)" type="button" class="w-full button button-danger text-base sm:text-sm/6 mb-1">
-                                        Remove
-                                    </button>
-                                </div>
                                 <div class="col-span-12 mb-2">
                                     <div class="row w-full">
                                         <div class="col-span-12 card">
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-span-12 mb-2">
-                                                        <div class="flex productionOrders-center justify-between mb-5">
+                                                        <div class="flex productionOrders-center justify-between">
                                                             <div class="min-w-0">
-                                                                <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight capitalize">
+                                                                <h2 class="text-2xl font-bold text-gray-900 sm:truncate sm:text-2xl sm:tracking-tight capitalize">
                                                                     Materials
                                                                 </h2>
-                                                            </div>
-
-                                                            <div class="min-w-0">
-                                                                <button @click="addProductionOrderItemMaterial(index)" type="button" class="button button-primary">
-                                                                    Add
-                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div v-for="(material, material_index) in productionOrderItemData.materials" class="col-span-12 mb-2">
                                                         <div class="row">
-                                                            <div class="col-span-5 mb-2">
+                                                            <div class="col-span-6 mb-2">
                                                                 <label class="block text-sm/6 font-medium text-gray-900">Item</label>
                                                                 <div class="mt-2">
                                                                     <select
@@ -139,7 +121,7 @@ const removeProductionOrderItemMaterial = async (order_item_index: number, index
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-span-5 mb-2">
+                                                            <div class="col-span-6 mb-2">
                                                                 <label class="block text-sm/6 font-medium text-gray-900">Quantity</label>
                                                                 <div class="mt-2">
                                                                     <input
@@ -152,12 +134,12 @@ const removeProductionOrderItemMaterial = async (order_item_index: number, index
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-span-2 mb-2 flex items-end">
+                                                            <!-- <div class="col-span-2 mb-2 flex items-end">
                                                                 <label class="block text-sm/6 font-medium text-gray-900">&nbsp;</label>
                                                                 <button @click="removeProductionOrderItemMaterial(index, material_index)" type="button" class="w-full button button-danger text-base sm:text-sm/6 mb-1">
                                                                     Remove
                                                                 </button>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>
                                                 </div>

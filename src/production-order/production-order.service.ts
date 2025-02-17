@@ -4,10 +4,12 @@ import { ProductionOrder } from './production-order.entity';
 import { ProductionOrderItem } from './production-order-item.entity';
 import { ProductionOrderItemMaterial } from './production-order-item-material.entity';
 import { ProductionOrderStage } from './production-order-stage.entity';
+import { Item } from 'src/item/item.entity';
 
 @Injectable()
 export class ProductionOrderService {
   constructor(
+    @Inject('ITEM_REPOSITORY') private itemRepository: Repository<Item>,
     @Inject('PRODUCTION_ORDER_REPOSITORY') private productionOrderRepository: Repository<ProductionOrder>,
     @Inject('PRODUCTION_ORDER_ITEM_REPOSITORY') private productionOrderItemRepository: Repository<ProductionOrderItem>,
     @Inject('PRODUCTION_ORDER_ITEM_MATERIAL_REPOSITORY') private productionOrderItemMaterialRepository: Repository<ProductionOrderItemMaterial>,
@@ -21,7 +23,7 @@ export class ProductionOrderService {
     return productionOrders;
   }
 
-  async getById(id: number): Promise<ProductionOrder|null>
+  async getById(id: number): Promise<ProductionOrder>
   {
     const productionOrder = await this.productionOrderRepository.findOneOrFail({
       where: {
@@ -70,8 +72,6 @@ export class ProductionOrderService {
       for (let j = 0; j < production_order_item.materials.length; j++) {
         const material = production_order_item.materials[j];
 
-        console.log(production_order_item.materials[j].item_id);
-
         const productionOrderItemMaterial = await this.productionOrderItemMaterialRepository.create({
           production_order_item: productionOrderItem,
           item: {id: material.item_id},
@@ -97,12 +97,28 @@ export class ProductionOrderService {
       await this.productionOrderStageRepository.save(productionOrderStage);
     }
 
+    await this.removeMaterialItems(await this.getById(productionOrder.id));
+
     return productionOrder;
   }
 
   async update(data: Record<string, any>, id: number) : Promise<ProductionOrder|null>
   {
-    const productionOrder = await this.productionOrderRepository.findOneOrFail({where: {id: id}});
+    const productionOrder = await this.productionOrderRepository.findOneOrFail({
+      where: {id: id},
+      relations: {
+        production_order_stages: {
+          machine: true
+        },
+        production_order_items: {
+          output_item: true,
+          production_order_item_materials: {
+            item: true,
+          },
+        },
+        production_order_inspections: true,
+      }
+    });
 
     await this.productionOrderRepository.update(
       id,
@@ -114,6 +130,10 @@ export class ProductionOrderService {
         actual_end_date: data?.actual_end_date ?? productionOrder?.actual_end_date ?? undefined,
       }
     );
+
+    if ((data?.status ?? productionOrder?.status) == "completed") {
+      await this.addOutputItems(productionOrder);
+    }
 
     let productionOrderItem: ProductionOrderItem;
 
@@ -148,23 +168,47 @@ export class ProductionOrderService {
     }
 
     for (let i = 0; i < data.production_order_stages.length; i++) {
-      if (productionOrder) {
-        const productionOrderStage = await this.productionOrderStageRepository.update(
-          id,
+      const productionOrderStage = await this.productionOrderStageRepository.update(
+        data.production_order_stages[i].id,
+        {
+          machine: { id: data.production_order_stages[i].machine_id },
+          name: data.production_order_stages[i].name,
+          status: data.production_order_stages[i].status,
+          scheduled_start_date: data.production_order_stages[i].scheduled_start_date,
+          scheduled_end_date: data.production_order_stages[i].scheduled_end_date,
+          actual_start_date: data.production_order_stages[i]?.actual_start_date ?? undefined,
+          actual_end_date: data.production_order_stages[i]?.actual_end_date ?? undefined,
+        }
+      );
+    }
+
+    return await this.productionOrderRepository.findOneOrFail({where: {id: id}});
+  }
+
+  private async removeMaterialItems(productionOrder: ProductionOrder)
+  {
+    for (let i = 0; i < productionOrder.production_order_items.length; i++) {
+      for (let j = 0; j < productionOrder.production_order_items[i].production_order_item_materials.length; j++) {
+        this.itemRepository.update(
+          productionOrder.production_order_items[i].production_order_item_materials[j].item.id,
           {
-            machine: { id: data.production_order_stages[i].machine_id },
-            name: data.production_order_stages[i].name,
-            status: data.production_order_stages[i].status,
-            scheduled_start_date: data.production_order_stages[i].scheduled_start_date,
-            scheduled_end_date: data.production_order_stages[i].scheduled_end_date,
-            actual_start_date: data.production_order_stages[i]?.actual_start_date ?? undefined,
-            actual_end_date: data.production_order_stages[i]?.actual_end_date ?? undefined,
+            quantity: productionOrder.production_order_items[i].production_order_item_materials[j].item.quantity - productionOrder.production_order_items[i].production_order_item_materials[j].quantity
           }
         );
       }
     }
+  }
 
-    return await this.productionOrderRepository.findOneOrFail({where: {id: id}});
+  private async addOutputItems(productionOrder: ProductionOrder)
+  {
+    for (let i = 0; i < productionOrder.production_order_items.length; i++) {
+      this.itemRepository.update(
+        productionOrder.production_order_items[i].output_item.id,
+        {
+          quantity: productionOrder.production_order_items[i].output_item.quantity + productionOrder.production_order_items[i].quantity
+        }
+      );
+    }
   }
 
   async delete(id: number) : Promise<void>

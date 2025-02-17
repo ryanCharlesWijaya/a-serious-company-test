@@ -10,6 +10,7 @@ import { ProductionOrderInspection } from 'src/production-order-inspection/produ
 import { Machine } from 'src/machine/machine.entity';
 import { databaseProviders } from 'src/database/database.providers';
 import { ItemModule } from 'src/item/item.module';
+import { Item } from 'src/item/item.entity';
 
 @Module({
   imports: [
@@ -18,6 +19,11 @@ import { ItemModule } from 'src/item/item.module';
   controllers: [ProductionOrderController],
   providers: [
     ...databaseProviders,
+    {
+      provide: 'ITEM_REPOSITORY',
+      useFactory: (dataSource: DataSource) => dataSource.getRepository(Item),
+      inject: ['DATA_SOURCE'],
+    },
     {
       provide: 'PRODUCTION_ORDER_REPOSITORY',
       useFactory: (dataSource: DataSource) => dataSource.getRepository(ProductionOrder),
