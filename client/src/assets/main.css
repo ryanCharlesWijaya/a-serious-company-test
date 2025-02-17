@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+.container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5;
+}
+
+.row {
+    @apply grid grid-cols-12 gap-4;
+}
+
+.card {
+    @apply rounded overflow-hidden border-1 border-gray-300;
+}
+
+.card-body {
+    @apply p-6;
+}
+
+.form-control {
+    @apply w-full py-3 px-4 rounded text-base text-gray-900 placeholder:text-gray-400 border-1 border-gray-300 sm:text-sm/6;
+}
+
+.button {
+    @apply px-3 py-2;
+}
+
+.button-primary {
+    @apply text-white bg-gray-900 hover:bg-gray-950 rounded;
+}
+
+.button-danger {
+    @apply text-white bg-red-600 hover:bg-red-700 rounded;
+}
+
+.datatable label {
+    @apply mx-3 capitalize;
+}
+
+.dt-input {
+    @apply py-2 px-3 rounded text-base text-gray-900 placeholder:text-gray-400 border-1 border-gray-300 sm:text-sm/6;
+}
+
+.dt-container {
+    @apply flex flex-col;
+}
+
+.dt-layout-row {
+    @apply mb-5 w-full;
+}
+
+.dt-layout-full {
+    @apply w-full;
+}
+
+.dataTable tr {
+    @apply border-b-gray-300 border-b-1;
+}
+
+.dataTable th {
+    @apply text-left;
+}
+
+.dataTable th,
+.dataTable td {
+    @apply p-3;
+}
+
+.dt-layout-row{
+    @apply flex justify-between align-middle;
+}
